@@ -34,7 +34,8 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     public var isDismissEnabled = true
     
     // MARK: - Private variables
-    
+
+    private let dismissThreshold: CGFloat?
     private let presentDuration: TimeInterval?
     private let presentAnimation: (() -> ())?
     private let presentCompletion: ((Bool) -> ())?
@@ -59,12 +60,14 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     ///		alongside the card dismissal animation
     ///   - dismissCompletion: A block that will be run after the card has been
     ///		dismissed
-    @objc public init(presentDuration: NSNumber? = nil,
+    @objc public init(dismissThreshold: NSNumber? = nil,
+                      presentDuration: NSNumber? = nil,
                       presentAnimation: (() -> ())? = nil,
                       presentCompletion: ((Bool) -> ())? = nil,
                       dismissDuration: NSNumber? = nil,
                       dismissAnimation: (() -> ())? = nil,
                       dismissCompletion: ((Bool) -> ())? = nil) {
+        self.dismissThreshold = dismissThreshold.flatMap { return CGFloat($0.floatValue) }
         self.presentDuration = presentDuration?.doubleValue
         self.presentAnimation = presentAnimation
         self.presentCompletion = presentCompletion
@@ -120,6 +123,9 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
             dismissAnimation: dismissAnimation,
             dismissCompletion: dismissCompletion)
         presentationController.transitioningDelegate = self
+        if let dismissThreshold = dismissThreshold {
+            presentationController.dismissThreshold = dismissThreshold
+        }
         return presentationController
     }
     

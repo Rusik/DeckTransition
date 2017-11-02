@@ -59,7 +59,9 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     private var presentCompletion: ((Bool) -> ())? = nil
     private var dismissAnimation: (() -> ())? = nil
     private var dismissCompletion: ((Bool) -> ())? = nil
-	
+
+    var dismissThreshold: CGFloat = 240
+
     // MARK: - Initializers
     
     convenience init(presentedViewController: UIViewController,
@@ -577,8 +579,7 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     ///   the container view in the vertical direction
     private func updatePresentedViewForTranslation(inVerticalDirection translation: CGFloat) {
         
-        let elasticThreshold: CGFloat = 120
-        let dismissThreshold: CGFloat = 240
+        let elasticThreshold: CGFloat = dismissThreshold / 2
         
         let translationFactor: CGFloat = 1/2
         

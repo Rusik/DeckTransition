@@ -32,16 +32,13 @@ final class DeckPresentingAnimationController: NSObject, UIViewControllerAnimate
         presentedViewController.view.frame = CGRect(x: 0, y: containerView.bounds.height, width: containerView.bounds.width, height: containerView.bounds.height)
         
         let finalFrameForPresentedView = transitionContext.finalFrame(for: presentedViewController)
-        
-        UIView.animate(
-            withDuration: transitionDuration(using: transitionContext),
-            delay: 0,
-            options: .curveEaseOut,
-            animations: {
-                presentedViewController.view.frame = finalFrameForPresentedView
-            }, completion: { finished in
-                transitionContext.completeTransition(finished)
-            })
+
+        UIView.animate(withDuration: transitionDuration(using: transitionContext),
+                       delay: 0,
+                       usingSpringWithDamping: 1,
+                       initialSpringVelocity: 0,
+                       animations: { presentedViewController.view.frame = finalFrameForPresentedView },
+                       completion: { finished in transitionContext.completeTransition(finished) })
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

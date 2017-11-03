@@ -35,7 +35,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     
     // MARK: - Private variables
 
-    private let dismissThreshold: CGFloat?
+    private let dismissThreshold: Float?
     private let presentDuration: TimeInterval?
     private let presentAnimation: (() -> ())?
     private let presentCompletion: ((Bool) -> ())?
@@ -67,7 +67,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
                       dismissDuration: NSNumber? = nil,
                       dismissAnimation: (() -> ())? = nil,
                       dismissCompletion: ((Bool) -> ())? = nil) {
-        self.dismissThreshold = dismissThreshold.flatMap { return CGFloat($0.floatValue) }
+        self.dismissThreshold = dismissThreshold.flatMap { return $0.floatValue }
         self.presentDuration = presentDuration?.doubleValue
         self.presentAnimation = presentAnimation
         self.presentCompletion = presentCompletion

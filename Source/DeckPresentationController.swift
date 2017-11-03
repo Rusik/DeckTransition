@@ -60,7 +60,7 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     private var dismissAnimation: (() -> ())? = nil
     private var dismissCompletion: ((Bool) -> ())? = nil
 
-    var dismissThreshold: CGFloat = 240
+    var dismissThreshold: Float = 240
 
     // MARK: - Initializers
     
@@ -579,7 +579,7 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     ///   the container view in the vertical direction
     private func updatePresentedViewForTranslation(inVerticalDirection translation: CGFloat) {
         
-        let elasticThreshold: CGFloat = dismissThreshold / 2
+        let elasticThreshold: CGFloat = CGFloat(dismissThreshold) / 2
         
         let translationFactor: CGFloat = 1/2
         
@@ -598,7 +598,7 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
             
             presentedView?.transform = CGAffineTransform(translationX: 0, y: translationForModal)
             
-            if translation >= dismissThreshold {
+            if translation >= CGFloat(dismissThreshold) {
                 presentedViewController.dismiss(animated: true, completion: nil)
             }
         }

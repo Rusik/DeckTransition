@@ -39,15 +39,12 @@ final class DeckDismissingAnimationController: NSObject, UIViewControllerAnimate
         
         let offscreenFrame = CGRect(x: 0, y: containerView.bounds.height, width: containerView.bounds.width, height: containerView.bounds.height)
         
-        UIView.animate(
-            withDuration: transitionDuration(using: transitionContext),
-            delay: 0,
-            options: .curveEaseOut,
-            animations: {
-                presentedViewController.view.frame = offscreenFrame
-            }, completion: { finished in
-                transitionContext.completeTransition(finished)
-            })
+        UIView.animate(withDuration: transitionDuration(using: transitionContext),
+                       delay: 0,
+                       usingSpringWithDamping: 1,
+                       initialSpringVelocity: 0,
+                       animations: { presentedViewController.view.frame = offscreenFrame },
+                       completion: { finished in transitionContext.completeTransition(finished) })
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

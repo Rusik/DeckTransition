@@ -61,6 +61,11 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     private var dismissCompletion: ((Bool) -> ())? = nil
 
     var dismissThreshold: Float = 240
+    var disablePresentedCornerRadius = false {
+        didSet {
+            roundedViewForPresentedView.cornerRadius = disablePresentedCornerRadius ? 0 : Constants.cornerRadius
+        }
+    }
 
     // MARK: - Initializers
     

@@ -42,6 +42,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     private let dismissDuration: TimeInterval?
     private let dismissAnimation: (() -> ())?
     private let dismissCompletion: ((Bool) -> ())?
+    private let disablePresentedCornerRadius: Bool
     
     // MARK: - Initializers
     
@@ -66,7 +67,8 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
                       presentCompletion: ((Bool) -> ())? = nil,
                       dismissDuration: NSNumber? = nil,
                       dismissAnimation: (() -> ())? = nil,
-                      dismissCompletion: ((Bool) -> ())? = nil) {
+                      dismissCompletion: ((Bool) -> ())? = nil,
+                      disablePresentedCornerRadius: Bool = false) {
         self.dismissThreshold = dismissThreshold.flatMap { return $0.floatValue }
         self.presentDuration = presentDuration?.doubleValue
         self.presentAnimation = presentAnimation
@@ -74,6 +76,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
         self.dismissDuration = dismissDuration?.doubleValue
         self.dismissAnimation = dismissAnimation
         self.dismissCompletion = dismissCompletion
+        self.disablePresentedCornerRadius = disablePresentedCornerRadius
     }
     
     // MARK: - UIViewControllerTransitioningDelegate
@@ -126,6 +129,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
         if let dismissThreshold = dismissThreshold {
             presentationController.dismissThreshold = dismissThreshold
         }
+        presentationController.disablePresentedCornerRadius = self.disablePresentedCornerRadius
         return presentationController
     }
     

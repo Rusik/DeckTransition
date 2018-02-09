@@ -22,20 +22,11 @@ import UIKit
 /// modal.modalPresentationStyle = .custom
 /// present(modal, animated: true, completion: nil)
 /// ```
-public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate, DeckPresentationControllerDelegate {
-    
-    // MARK: - Public variables
-    
-    /// A variable indicating whether or not the presenting view controller
-    /// can currently be dismissed using a pan gestures from top to bottom.
-    ///
-    /// When set to `true`, this allows the presented modal view to be dismissed
-    /// using a pan gesture. The default value of this property is `true`
-    @objc public var isDismissEnabled = true
+public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     
     // MARK: - Private variables
-
     private let dismissThreshold: Float?
+    private let isSwipeToDismissEnabled: Bool
     private let presentDuration: TimeInterval?
     private let presentAnimation: (() -> ())?
     private let presentCompletion: ((Bool) -> ())?
@@ -47,10 +38,13 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     // MARK: - Initializers
     
     /// Returns a transitioning delegate to perform a Deck transition. All
-    /// parameters are optional. Leaving the duration parameters empty gives you
-    /// animations with the default durations (0.3s for both)
+    /// parameters are optional. Swipe-to-dimiss is enabled by default. Leaving
+    /// the duration parameters empty gives you animations with the default
+    /// durations (0.3s for both)
     ///
     /// - Parameters:
+    ///   - isSwipeToDismissEnabled: Whether the modal view controller should
+    ///     be dismissed with a swipe gesture from top to bottom
     ///	  - presentDuration: The duration for the presentation animation
     ///   - presentAnimation: An animation block that will be performed
     ///		alongside the card presentation animation
@@ -62,6 +56,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
     ///   - dismissCompletion: A block that will be run after the card has been
     ///		dismissed
     @objc public init(dismissThreshold: NSNumber? = nil,
+                      isSwipeToDismissEnabled: Bool = true,
                       presentDuration: NSNumber? = nil,
                       presentAnimation: (() -> ())? = nil,
                       presentCompletion: ((Bool) -> ())? = nil,
@@ -70,6 +65,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
                       dismissCompletion: ((Bool) -> ())? = nil,
                       disablePresentedCornerRadius: Bool = false) {
         self.dismissThreshold = dismissThreshold.flatMap { return $0.floatValue }
+        self.isSwipeToDismissEnabled = isSwipeToDismissEnabled
         self.presentDuration = presentDuration?.doubleValue
         self.presentAnimation = presentAnimation
         self.presentCompletion = presentCompletion
@@ -121,6 +117,7 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
         let presentationController = DeckPresentationController(
             presentedViewController: presented,
             presenting: presenting,
+            isSwipeToDismissGestureEnabled: isSwipeToDismissEnabled,
             presentAnimation: presentAnimation,
             presentCompletion: presentCompletion,
             dismissAnimation: dismissAnimation,
@@ -131,12 +128,6 @@ public final class DeckTransitioningDelegate: NSObject, UIViewControllerTransiti
         }
         presentationController.disablePresentedCornerRadius = self.disablePresentedCornerRadius
         return presentationController
-    }
-    
-    // MARK: - DeckPresentationControllerDelegate methods
-    
-    func isDismissGestureEnabled() -> Bool {
-        return isDismissEnabled
     }
     
 }

@@ -375,10 +375,12 @@ final class DeckPresentationController: UIPresentationController, UIGestureRecog
     /// then generates a new snapshot of the `presentingViewController`'s view,
     /// and then replaces the existing snapshot with it
     private func updateSnapshotView() {
-        guard let currentSnapshotView = presentingViewController.view.snapshotView(afterScreenUpdates: true) else {
-            return
+        guard
+            presentingViewController.view != nil,
+            let currentSnapshotView = presentingViewController.view.snapshotView(afterScreenUpdates: true) else {
+                return
         }
-        
+
         snapshotView?.removeFromSuperview()
         
         currentSnapshotView.translatesAutoresizingMaskIntoConstraints = false

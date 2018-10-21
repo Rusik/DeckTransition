@@ -1,4 +1,5 @@
 Pod::Spec.new do |spec|
+
   spec.name				= 'DeckTransition'
   spec.version          = '2.0.0'
   spec.summary          = 'An attempt to recreate the iOS 10 now playing transition'
@@ -15,5 +16,7 @@ Pod::Spec.new do |spec|
 
   spec.framework        = 'UIKit'
   spec.ios.deployment_target = '9.0'
+
+  spec.swift_version = '4.0'
 
 end
